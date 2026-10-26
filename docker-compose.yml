@@ -1,0 +1,15 @@
+services:
+
+  backend:
+    image: srishanthreddy18/music-festival-backend:latest
+    container_name: musicfestival-backend
+    ports:
+      - "9090:8082"
+
+  frontend:
+    image: srishanthreddy18/music-festival-frontend:latest
+    container_name: musicfestival-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
