@@ -1,0 +1,12 @@
+package com.klef.soa.docker.service;
+
+import java.util.List;
+
+import com.klef.soa.docker.entity.MusicFestival;
+
+public interface MusicFestivalService  {
+	 MusicFestival addFestival(MusicFestival festival);
+
+	    List<MusicFestival> getAllFestivals();
+	    String deleteById(Long id);
+}

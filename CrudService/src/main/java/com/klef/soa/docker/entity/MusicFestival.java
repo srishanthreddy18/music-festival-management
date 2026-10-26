@@ -1,0 +1,30 @@
+package com.klef.soa.docker.entity;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class MusicFestival {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank
+    private String festivalName;
+
+    @NotBlank
+    private String venue;
+
+    @NotBlank
+    private String eventDate;
+
+    @Positive
+    private Double ticketPrice;
+}

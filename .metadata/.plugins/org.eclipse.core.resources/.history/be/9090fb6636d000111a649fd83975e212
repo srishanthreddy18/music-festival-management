@@ -1,0 +1,47 @@
+package com.klef.soa.docker.controller;
+
+import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.klef.soa.docker.entiry.MusicFestival;
+import com.klef.soa.docker.service.MusicFestivalService;
+
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequiredArgsConstructor
+public class MusicFestivalController {
+
+    private final MusicFestivalService service;
+
+    @GetMapping("/")
+    public String home() {
+        return "Music Festival CRUD Service Running Successfully";
+    }
+
+    @PostMapping("/Add")
+    public MusicFestival addFestival(
+            @RequestBody MusicFestival festival) {
+
+        return service.addFestival(festival);
+    }
+
+    @GetMapping("/DisplayAll")
+    public List<MusicFestival> displayAllFestivals() {
+
+        return service.getAllFestivals();
+    }
+
+    @DeleteMapping("/Delete/{id}")
+    public String deleteFestival(
+            @PathVariable Long id) {
+
+        return service.deleteById(id);
+    }
+}

@@ -1,0 +1,67 @@
+package com.klef.soa.docker.service;
+import java.util.List;
+import org.springframework.stereotype.Service;
+import com.klef.soa.docker.entity.MusicFestival;
+import com.klef.soa.docker.repository.MusicFestivalRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class MusicFestivalServiceImpl implements MusicFestivalService {
+
+    private final MusicFestivalRepository repository;
+
+    @Override
+    public MusicFestival addFestival(MusicFestival festival) {
+
+        MusicFestival newFestival = MusicFestival.builder()
+                .festivalName(festival.getFestivalName())
+                .venue(festival.getVenue())
+                .eventDate(festival.getEventDate())
+                .ticketPrice(festival.getTicketPrice())
+                .build();
+
+        return repository.save(newFestival);
+    }
+
+    @Override
+    public List<MusicFestival> getAllFestivals() {
+        return repository.findAll();
+    }
+
+    @Override
+    public MusicFestival getFestivalById(Long id) {
+
+        return repository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Music Festival Not Found with ID: " + id));
+    }
+
+    @Override
+    public MusicFestival updateFestival(Long id, MusicFestival festival) {
+
+        MusicFestival existingFestival = repository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Music Festival Not Found with ID: " + id));
+
+        existingFestival.setFestivalName(festival.getFestivalName());
+        existingFestival.setVenue(festival.getVenue());
+        existingFestival.setEventDate(festival.getEventDate());
+        existingFestival.setTicketPrice(festival.getTicketPrice());
+
+        return repository.save(existingFestival);
+    }
+
+    @Override
+    public String deleteById(Long id) {
+
+        MusicFestival festival = repository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Music Festival Not Found with ID: " + id));
+
+        repository.delete(festival);
+
+        return "Music Festival Deleted Successfully";
+    }
+}
