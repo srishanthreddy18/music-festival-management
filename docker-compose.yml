@@ -1,14 +1,26 @@
 services:
 
+  postgresdb:
+    image: postgres:16
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: exam_2400031485
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
+    ports:
+      - "5432:5432"
+
   backend:
     image: srishanthreddy18/music-festival-backend:latest
-    container_name: musicfestival-backend
+    container_name: backend-container
     ports:
       - "9090:8082"
+    depends_on:
+      - postgresdb
 
   frontend:
     image: srishanthreddy18/music-festival-frontend:latest
-    container_name: musicfestival-frontend
+    container_name: frontend-container
     ports:
       - "3000:3000"
     depends_on:
