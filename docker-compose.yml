@@ -6,17 +6,25 @@ services:
     environment:
       POSTGRES_DB: exam_2400031485
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Srishanth1817$$
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD before starting Compose}
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d exam_2400031485"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   backend:
     image: srishanthreddy18/music-festival-backend:latest
     container_name: backend-container
+    environment:
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD before starting Compose}
     ports:
       - "9090:8082"
     depends_on:
-      - postgresdb
+      postgresdb:
+        condition: service_healthy
 
   frontend:
     image: srishanthreddy18/music-festival-frontend:latest
