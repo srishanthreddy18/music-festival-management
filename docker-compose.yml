@@ -1,35 +1,45 @@
 services:
-
   postgresdb:
     image: postgres:16
     container_name: postgres-db
     environment:
       POSTGRES_DB: exam_2400031485
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD before starting Compose}
+      POSTGRES_PASSWORD: change-me
     ports:
       - "5432:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d exam_2400031485"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - music-festival-net
 
   backend:
     image: srishanthreddy18/music-festival-backend:latest
     container_name: backend-container
     environment:
-      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD before starting Compose}
+      SPRING_DATASOURCE_PASSWORD: change-me
     ports:
       - "9090:8082"
     depends_on:
-      postgresdb:
-        condition: service_healthy
+      - postgresdb
+    restart: on-failure
+    networks:
+      - music-festival-net
 
   frontend:
     image: srishanthreddy18/music-festival-frontend:latest
+    build: ./musicfestival-frontend
     container_name: frontend-container
     ports:
       - "3000:3000"
     depends_on:
       - backend
+    restart: on-failure
+    networks:
+      - music-festival-net
+
+volumes:
+  postgres_data:
+
+networks:
+  music-festival-net:
