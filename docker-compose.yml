@@ -4,7 +4,7 @@ services:
     container_name: postgres-db
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in the environment}
+      POSTGRES_PASSWORD: docker
       POSTGRES_DB: exam_2400031485
     ports:
       - "5432:5432"
@@ -21,7 +21,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgresdb:5432/exam_2400031485
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in the environment}
+      SPRING_DATASOURCE_PASSWORD: docker
     depends_on:
       - postgresdb
     restart: on-failure
